@@ -21,3 +21,6 @@ services:
       - path: /index.html
         name: Cache-Control
         value: no-cache
+      - path: /
+        name: Cache-Control
+        value: no-cache
