@@ -848,8 +848,14 @@
     const items = buildExam(cfg);
     view.innerHTML = '';
     view.appendChild(el('div', { class: 'continue noprint' }, [el('button', { class: 'btn primary', type: 'button', text: 'In ngay', onclick: () => window.print() }), el('a', { class: 'btn', href: '#/exam', text: 'Quay lại' })]));
-    view.appendChild(el('h1', { text: 'Đề kiểm tra giải tích' }));
-    view.appendChild(el('p', { class: 'meta', text: 'Mã đề ' + cfg.seed + ' · ' + items.length + ' câu · ' + (cfg.minutes ? cfg.minutes + ' phút' : 'không giới hạn thời gian') + ' · Họ tên: ................................................' }));
+    view.appendChild(el('div', { class: 'examhead' }, [
+      el('div', null, [
+        el('h1', { text: 'Đề kiểm tra giải tích' }),
+        el('p', { class: 'meta', text: 'Mã đề ' + cfg.seed + ' · ' + items.length + ' câu trắc nghiệm · ' + (cfg.minutes ? 'thời gian ' + cfg.minutes + ' phút' : 'không giới hạn thời gian') }),
+      ]),
+      el('div', { class: 'score-box', html: 'Điểm<div></div>' }),
+      el('div', { class: 'fill', html: 'Họ và tên: ........................................................ Lớp: ..................<br>Ngày làm bài: ........ / ........ / ..............' }),
+    ]));
     items.forEach((it, i) => view.appendChild(renderQuestion(it, i, 'print')));
     const key = el('div', { class: 'answerkey' });
     key.appendChild(el('h2', { text: 'Đáp án · mã đề ' + cfg.seed }));

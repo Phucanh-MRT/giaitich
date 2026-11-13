@@ -235,7 +235,7 @@ p { margin: 0 0 12px; text-wrap: pretty; }
 .katex { font-size: 1.06em; }
 .katex-display { margin: 10px 0; overflow-x: auto; overflow-y: hidden; padding: 2px 0; }
 
-@media (max-width: 900px) {
+@media screen and (max-width: 900px) {
   .shell { grid-template-columns: 1fr; }
   .side { position: fixed; left: 0; top: 0; width: 300px; max-width: 86vw; transform: translateX(-102%); transition: transform .25s cubic-bezier(.2,.8,.2,1); box-shadow: 0 10px 40px rgba(0,0,0,.18); }
   .side.open { transform: none; }
@@ -323,7 +323,7 @@ p { margin: 0 0 12px; text-wrap: pretty; }
 .qscore.good { color: var(--good); }
 .qscore.part { color: var(--accent); }
 .quiz .qn { color: var(--faint); font-variant-numeric: tabular-nums; }
-@media (max-width: 900px) { .work .wq { grid-template-columns: 1fr; gap: 2px; } }
+@media screen and (max-width: 900px) { .work .wq { grid-template-columns: 1fr; gap: 2px; } }
 .chip.alt { border-style: dashed; }
 
 /* ---------- giấy trắng: chữ đọc dạng sách, khối phẳng, đường kẻ mảnh ---------- */
@@ -384,26 +384,48 @@ h2 { border-bottom: 1px solid var(--ink); padding-bottom: 6px; }
 .bar i { display: block; height: 100%; background: var(--ink); }
 .hist td a { text-decoration: none; }
 .printonly { display: none; }
+/* In ra giấy A4 (khổ chuẩn ở Việt Nam), lề 15–18 mm, đánh số trang. */
+@page { size: A4 portrait; margin: 15mm 16mm 18mm; @bottom-center { content: "Trang " counter(page) " / " counter(pages); font: 9pt "Be Vietnam Pro", sans-serif; color: #555; } }
 @media print {
-  .side, .topbar, .scrim, .noprint, .exam-bar, .exam-dots { display: none !important; }
-  .shell { display: block; }
-  .view { max-width: none; padding: 0; }
-  body { background: #fff; color: #000; font-size: 12pt; }
-  .view > * { animation: none !important; }
+  :root, :root[data-theme="dark"] { --ground: #fff; --surface: #fff; --sunk: #eee; --ink: #000; --muted: #333; --faint: #555; --rule: #bbb; --rule-strong: #888; }
+  html, body { background: #fff !important; color: #000; }
+  body { font-size: 11.5pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .side, .topbar, .scrim, .noprint, .exam-bar, .exam-dots, .bottomnav { display: none !important; }
+  .shell, .main { display: block !important; margin: 0 !important; padding: 0 !important; min-height: 0 !important; }
+  .view { max-width: none !important; width: auto !important; padding: 0 !important; margin: 0 !important; }
+  .view > * { animation: none !important; opacity: 1 !important; transform: none !important; }
   .printonly { display: block; }
-  .exq { break-inside: avoid; padding: 8px 0; }
-  .exq .opts button { border: 0; padding: 2px 0; }
+  h1 { font-size: 17pt; margin: 0 0 4pt; }
+  h2 { font-size: 13pt; }
+  a { color: inherit; text-decoration: none; }
+  .exq { break-inside: avoid; page-break-inside: avoid; padding: 6pt 0 7pt; border-top: 0.5pt solid #bbb; }
+  .exq .qhd { margin-bottom: 3pt; }
+  .exq .qno { font-size: 11.5pt; min-width: 0; }
+  .exq .qtx { font-size: 11.5pt; }
+  .exq .opts { grid-template-columns: 1fr 1fr; gap: 2pt 14pt; margin-top: 4pt; }
+  .exq .opts button { border: 0 !important; background: none !important; box-shadow: none !important; padding: 1pt 0; font: 11.5pt/1.45 var(--serif); color: #000; grid-template-columns: 18pt 1fr; min-width: 0; }
+  .exq .opts button span { min-width: 0; overflow-wrap: anywhere; }
+  .katex-display { margin: 4pt 0; overflow: visible !important; }
+  .examhead { display: grid; grid-template-columns: 1fr auto; gap: 4pt 16pt; border: 0.8pt solid #000; padding: 8pt 10pt; margin-bottom: 8pt; break-inside: avoid; }
+  .examhead .fill { font-size: 11pt; }
   .answerkey { break-before: page; }
+  .answerkey .wtable td { text-align: left; font-size: 11pt; padding: 3pt 6pt; border: 0.5pt solid #999; }
 }
+.examhead { display: grid; grid-template-columns: 1fr auto; gap: 4px 20px; border: 1px solid var(--ink); border-radius: 4px; padding: 12px 16px; margin: 12px 0 14px; }
+.examhead h1 { margin: 0; }
+.examhead .meta { margin: 0; }
+.examhead .fill { font-size: 14.5px; line-height: 2; }
+.examhead .score-box { border: 1px solid var(--ink); min-width: 90px; text-align: center; padding: 4px 8px; font-size: 13px; align-self: start; grid-row: span 2; }
+.examhead .score-box div { height: 34px; }
 
 /* ---------- điện thoại và máy tính bảng ---------- */
 .bottomnav { display: none; }
 .widget canvas.plot, canvas.plot { touch-action: pan-y; }
-@media (min-width: 901px) and (max-width: 1180px) {
+@media screen and (min-width: 901px) and (max-width: 1180px) {
   .shell { grid-template-columns: 260px 1fr; }
   .view { padding: 28px 28px 80px; }
 }
-@media (max-width: 900px) {
+@media screen and (max-width: 900px) {
   .bottomnav {
     display: grid; grid-template-columns: repeat(5, 1fr); position: fixed; left: 0; right: 0; bottom: 0; z-index: 15;
     background: var(--ground); border-top: 1px solid var(--rule-strong); padding: 4px 4px calc(4px + env(safe-area-inset-bottom));
@@ -463,7 +485,7 @@ h2 { border-bottom: 1px solid var(--ink); padding-bottom: 6px; }
   .unitrow .sq a { width: 20px; height: 20px; }
   .mapwrap { -webkit-overflow-scrolling: touch; }
 }
-@media (max-width: 420px) {
+@media screen and (max-width: 420px) {
   .view { padding-left: 14px; padding-right: 14px; }
   .chips { gap: 6px; }
   .chip { font-size: 12.5px; }
@@ -478,7 +500,7 @@ h2 { border-bottom: 1px solid var(--ink); padding-bottom: 6px; }
 .preset span { font-size: 13.5px; color: var(--ink); line-height: 1.4; }
 .preset small { font-size: 12.5px; color: var(--muted); margin-top: 2px; font-variant-numeric: tabular-nums; }
 .exq .qtag { font-size: 11.5px; color: var(--data2); border: 1px solid var(--data2); border-radius: 99px; padding: 0 8px; }
-@media (max-width: 900px) { .presets { grid-template-columns: 1fr 1fr; } .preset { padding: 10px 12px; } }
+@media screen and (max-width: 900px) { .presets { grid-template-columns: 1fr 1fr; } .preset { padding: 10px 12px; } }
 
 /* ---------- trang quản trị #/admin ---------- */
 .adm-login { display: grid; gap: 12px; max-width: 360px; margin-top: 14px; }
@@ -503,4 +525,4 @@ h2 { border-bottom: 1px solid var(--ink); padding-bottom: 6px; }
 .adm-list td.n { width: 60px; } .adm-list td.b { width: 35%; }
 .adm-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 .adm-note { margin-top: 24px; }
-@media (max-width: 900px) { .adm-cols { grid-template-columns: 1fr; gap: 0; } .adm-list td.b { width: 28%; } }
+@media screen and (max-width: 900px) { .adm-cols { grid-template-columns: 1fr; gap: 0; } .adm-list td.b { width: 28%; } }

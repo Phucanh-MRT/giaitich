@@ -11,7 +11,9 @@
     if (q === 1) return String(p);
     return (p < 0 ? '-' : '') + '\\frac{' + Math.abs(p) + '}{' + q + '}';
   };
-  const M = (s) => '$' + s + '$';
+  // Viết gọn hệ số 1: "1y" → "y", "-1t" → "-t", "1\pi" → "\pi", "t/1" → "t".
+  const tidy = (s) => String(s).replace(/(^|[=+\-(\s{^])1(?=\\pi|[a-zA-Z](?![a-zA-Z]))/g, '$1').replace(/([a-z])\/1(?![0-9])/g, '$1');
+  const M = (s) => '$' + tidy(s) + '$';
   const tools = (R) => {
     const ri = (a, b) => a + Math.floor(R() * (b - a + 1));
     const pick = (arr) => arr[Math.floor(R() * arr.length)];
@@ -111,8 +113,8 @@
     return pack(`Phân tích ${M(`\\dfrac{1}{(x-${a})(x-${b})}=\\dfrac{A}{x-${a}}+\\dfrac{B}{x-${b}}`)}. Khi đó ${M('A')} bằng`, M(F(1, a - b)), [M(F(1, b - a)), M(1), M(F(1, a + b))], `Thế ${M(`x=${a}`)}: ${M(`A=\\frac{1}{${a}-${b}}`)}.`); });
 
   /* ---------- Chương 9–11 ---------- */
-  def(9, '9.3', (R) => { const { ri, nz } = tools(R); const k = nz(-3, 3), A = ri(1, 9);
-    return pack(`Nghiệm của ${M(`y'=${k}y`)}, ${M(`y(0)=${A}`)} là`, M(`y=${A}e^{${k}t}`), [M(`y=${A}e^{t/${k}}`), M(`y=${A}${sgn(k)}t`), M(`y=${A * k}e^{t}`)], 'Tăng trưởng/suy giảm mũ.'); });
+  def(9, '9.3', (R) => { const { ri } = tools(R); const k = [-3, -2, 2, 3][ri(0, 3)], A = ri(2, 9);
+    return pack(`Nghiệm của ${M(`y'=${k}y`)}, ${M(`y(0)=${A}`)} là`, M(`y=${A}e^{${k}t}`), [M(`y=${A}e^{${k < 0 ? '-' : ''}t/${Math.abs(k)}}`), M(`y=${A}${sgn(k)}t`), M(`y=${A * k}e^{t}`)], 'Tăng trưởng/suy giảm mũ: $y=y(0)e^{kt}$.'); });
   def(10, '10.3', (R) => { const { pick, ri } = tools(R); const r = ri(2, 6);
     const T = pick([['\\frac\\pi6', '\\frac{\\sqrt3}{2}', '\\frac12'], ['\\frac\\pi3', '\\frac12', '\\frac{\\sqrt3}{2}'], ['\\frac\\pi4', '\\frac{\\sqrt2}{2}', '\\frac{\\sqrt2}{2}'], ['\\frac{2\\pi}3', '-\\frac12', '\\frac{\\sqrt3}{2}']]);
     const mul = (k, v) => (v.startsWith('-') ? '-' + k + '\\cdot' + v.slice(1) : k + '\\cdot' + v);
