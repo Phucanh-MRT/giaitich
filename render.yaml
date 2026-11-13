@@ -1,0 +1,23 @@
+# Render Blueprint — Sổ Giải Tích là web tĩnh: không cần build, không có máy chủ.
+# Static Site trên Render miễn phí, không ngủ, phục vụ qua CDN.
+services:
+  - type: web
+    name: giaitich
+    runtime: static
+    branch: main
+    autoDeploy: true
+    buildCommand: echo "Không cần build"
+    staticPublishPath: .
+    headers:
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /js/*
+        name: Cache-Control
+        value: public, max-age=86400
+      - path: /css/*
+        name: Cache-Control
+        value: public, max-age=86400
+      - path: /index.html
+        name: Cache-Control
+        value: no-cache
