@@ -249,6 +249,13 @@
     cont.appendChild(el('a', { class: 'btn', href: '#/exam', text: ST.exam && !ST.exam.submitted ? 'Làm tiếp đề thi' : 'Làm đề thi' }));
     view.appendChild(cont);
     renderMath(cont);
+    const A = window.SGT_AUTHOR;
+    if (A) {
+      const by = el('div', { class: 'byline' });
+      by.innerHTML = '<img src="' + A.photo + '" width="36" height="36" alt=""><span>Biên soạn bởi <a href="#/about"><b>' + esc(A.name) + '</b></a> · <a href="#/about">Giới thiệu &amp; liên hệ</a></span>';
+      by.appendChild(el('button', { type: 'button', class: 'btn small', text: '☕ Ủng hộ', onclick: () => window.SGT_DONATE() }));
+      view.appendChild(by);
+    }
 
     const stats = el('div', { class: 'stats' });
     [[done + '/' + total, 'mục đã học'], [qAll ? qRight + '/' + qAll : '0', 'câu trả lời đúng'], [String(nNotes), 'mục có ghi chú'], [String(due), 'thẻ đến hạn ôn']]
@@ -900,6 +907,7 @@
     else if (kind === 'map') mapView();
     else if (kind === 'notes') notesView();
     else if (kind === 'exam') examView(arg, arg2);
+    else if (kind === 'about' && window.SGT_ABOUT) { crumb.textContent = 'Giới thiệu'; window.SGT_ABOUT(view); }
     else if (kind === 'admin' && window.SGT_ADMIN) { window.SGT_ADMIN(view); closeDrawer(); window.scrollTo(0, 0); document.title = 'Quản trị · Sổ Giải Tích'; return; }
     else home();
     track('view', kind === 's' ? 's/' + curId : kind === 'exam' ? 'exam' + (arg ? '/' + arg : '') : (kind || 'home'));

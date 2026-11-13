@@ -86,7 +86,7 @@
   function pathName(p) {
     const G = window.SGT || {};
     if (p && p.indexOf('s/') === 0) { const s = G.BY && G.BY[p.slice(2)]; return s ? esc(s.num + ' ' + s.title) : esc(p); }
-    const names = { home: 'Trang chủ', review: 'Ôn thẻ', map: 'Bản đồ', notes: 'Ghi chú', exam: 'Đề thi', 'exam/r': 'Kết quả đề thi', 'exam/take': 'Đang làm đề', 'exam/print': 'In đề' };
+    const names = { home: 'Trang chủ', review: 'Ôn thẻ', map: 'Bản đồ', notes: 'Ghi chú', exam: 'Đề thi', 'exam/r': 'Kết quả đề thi', 'exam/take': 'Đang làm đề', 'exam/print': 'In đề', about: 'Giới thiệu' };
     return esc(names[p] || p);
   }
   const devName = { mobile: 'Điện thoại', tablet: 'Máy tính bảng', desktop: 'Máy tính' };
