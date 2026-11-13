@@ -479,3 +479,28 @@ h2 { border-bottom: 1px solid var(--ink); padding-bottom: 6px; }
 .preset small { font-size: 12.5px; color: var(--muted); margin-top: 2px; font-variant-numeric: tabular-nums; }
 .exq .qtag { font-size: 11.5px; color: var(--data2); border: 1px solid var(--data2); border-radius: 99px; padding: 0 8px; }
 @media (max-width: 900px) { .presets { grid-template-columns: 1fr 1fr; } .preset { padding: 10px 12px; } }
+
+/* ---------- trang quản trị #/admin ---------- */
+.adm-login { display: grid; gap: 12px; max-width: 360px; margin-top: 14px; }
+.adm-login label { display: grid; gap: 4px; font-size: 14px; color: var(--muted); }
+.adm-login input { font: inherit; color: var(--ink); padding: 9px 11px; border: 1px solid var(--rule-strong); border-radius: 6px; background: var(--surface); }
+.adm-err { color: var(--accent); font-size: 14px; min-height: 1em; }
+.adm-head { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.adm-head h1 { margin: 0; }
+.adm-tools { display: flex; flex-wrap: wrap; gap: 6px; }
+.adm-kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin: 14px 0 6px; }
+.adm-kpis > div { background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 12px 14px; }
+.adm-kpis b { display: block; font: 600 28px/1.1 var(--serif); font-variant-numeric: tabular-nums; }
+.adm-kpis span { color: var(--muted); font-size: 13px; }
+.adm-svg { width: 100%; height: auto; display: block; margin-top: 8px; }
+.adm-svg text { font-size: 11px; fill: var(--faint); font-variant-numeric: tabular-nums; }
+.adm-svg .g { stroke: var(--rule); }
+.adm-svg .v { fill: var(--data2); opacity: .8; }
+.adm-svg .u { fill: none; stroke: var(--accent); stroke-width: 2; }
+.adm-legend { font-size: 13px; color: var(--muted); display: flex; gap: 6px; align-items: center; }
+.adm-legend .sw { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-left: 8px; }
+.adm-legend .sw.v { background: var(--data2); } .adm-legend .sw.u { background: var(--accent); height: 3px; }
+.adm-list td.n { width: 60px; } .adm-list td.b { width: 35%; }
+.adm-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.adm-note { margin-top: 24px; }
+@media (max-width: 900px) { .adm-cols { grid-template-columns: 1fr; gap: 0; } .adm-list td.b { width: 28%; } }

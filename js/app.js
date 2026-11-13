@@ -798,6 +798,7 @@
     const rec = { at: Date.now(), cfg: E.cfg, items: E.items, ans: E.ans, right, score: Math.round(right / n * 10 * 100) / 100, secs: Math.min((Date.now() - E.start) / 1000, E.cfg.minutes ? E.cfg.minutes * 60 : Infinity), auto };
     ST.exams = [rec].concat(ST.exams || []).slice(0, 40);
     delete ST.exam; save();
+    track('exam', 'exam/submit', rec.score);
     location.hash = '#/exam/r/0';
   }
 
@@ -860,6 +861,25 @@
     renderMath(view);
   }
 
+  /* ---------- đếm lượt truy cập (Supabase, chỉ ghi; lỗi thì bỏ qua) ---------- */
+  let firstHit = true;
+  function track(kind, path, score) {
+    try {
+      const C = window.SGT_CONFIG;
+      if (!C || !C.url || !C.anon || !window.fetch) return;
+      if (/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) || location.protocol === 'file:') return;
+      let vid = localStorage.getItem('sgt-vid');
+      if (!vid) { vid = Math.random().toString(36).slice(2, 12) + Date.now().toString(36); localStorage.setItem('sgt-vid', vid); }
+      const w = Math.min(screen.width || innerWidth, innerWidth);
+      let ref = null;
+      if (firstHit) { ref = ''; try { const r = document.referrer && new URL(document.referrer).hostname; if (r && r !== location.hostname) ref = r.replace(/^www\./, '').slice(0, 120); } catch (e) {} }
+      firstHit = false;
+      const body = { vid, path: String(path).slice(0, 120), kind, device: w < 768 ? 'mobile' : w <= 1180 ? 'tablet' : 'desktop', ref, host: location.hostname.slice(0, 80) };
+      if (score != null) body.score = score;
+      fetch(C.url + '/rest/v1/giaitich_events', { method: 'POST', keepalive: true, headers: { apikey: C.anon, 'Content-Type': 'application/json', Prefer: 'return=minimal' }, body: JSON.stringify(body) }).catch(() => {});
+    } catch (e) {}
+  }
+
   /* ---------- định tuyến ---------- */
   function route() {
     (window.LIVE_WIDGETS || []).length = 0;
@@ -874,7 +894,9 @@
     else if (kind === 'map') mapView();
     else if (kind === 'notes') notesView();
     else if (kind === 'exam') examView(arg, arg2);
+    else if (kind === 'admin' && window.SGT_ADMIN) { window.SGT_ADMIN(view); closeDrawer(); window.scrollTo(0, 0); document.title = 'Quản trị · Sổ Giải Tích'; return; }
     else home();
+    track('view', kind === 's' ? 's/' + curId : kind === 'exam' ? 'exam' + (arg ? '/' + arg : '') : (kind || 'home'));
     buildToc($('#q').value.trim());
     const cur = toc.querySelector('a.cur');
     if (cur) cur.scrollIntoView({ block: 'nearest' });
